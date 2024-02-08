@@ -1,0 +1,31 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build application
+        run: yarn build
+
+      - name: Deploy website
+          uses: crustio/ipfs-crust-action@v2.0.6
+          with:
+            cid: QmSkDjtrPkmcMXQXDz6Zo4VjfzNUVtuRWen65yBeeN68zT
+            seeds: ${{ secrets.CRUST_SEEDS }}
